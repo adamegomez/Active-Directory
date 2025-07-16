@@ -9,15 +9,15 @@ Objective: Learn how to install and configure Active Directory on a Windows Serv
 ## 📌 Overview
 This lab walks through setting up a basic Active Directory environment on AWS. You'll:
 
-- Install and configure DNS and AD DS roles
+  - Install and configure DNS and AD DS roles
 
-- Create OUs, users, and groups
+  - Create OUs, users, and groups
 
-- Apply Group Policy Objects (GPOs)
+  - Apply Group Policy Objects (GPOs)
 
-- Add a client machine to the domain
+  - Add a client machine to the domain
 
-- Verify policy application and assign admin rights
+  - Verify policy application and assign admin rights
 
 ---
 
@@ -30,9 +30,9 @@ This lab walks through setting up a basic Active Directory environment on AWS. Y
 
 4. Add rule:
 
-  - Type: All traffic
+    - Type: All traffic
 
-  - Source: Your copied IPv4 CIDR
+    - Source: Your copied IPv4 CIDR
 
 5. Click Save rules.
 
@@ -45,9 +45,9 @@ This lab walks through setting up a basic Active Directory environment on AWS. Y
 
 3. Select:
 
-  - DNS Server
+    - DNS Server
 
-  - Active Directory Domain Services (AD DS)
+    - Active Directory Domain Services (AD DS)
 
 4. Click Next through prompts.
 
@@ -56,67 +56,67 @@ This lab walks through setting up a basic Active Directory environment on AWS. Y
 ---
 
 ## 🌐 Task 3: Configure DNS for AD
-Open Tools > DNS from Server Manager.
+1. Open Tools > DNS from Server Manager.
 
-Create new zone:
+2. Create new zone:
 
-Zone Type: Primary
+    - Zone Type: Primary
 
-Zone Name: yourcppusername.local
+    - Zone Name: yourcppusername.local
 
-Allow nonsecure and secure updates
+    - Allow nonsecure and secure updates
 
-Go to DNS > Properties:
+3. Go to DNS > Properties:
 
-Interfaces tab: Uncheck IPv6
+    - Interfaces tab: Uncheck IPv6
 
-Forwarders tab: Use IP from ipconfig /all
+    - Forwarders tab: Use IP from ipconfig /all
 
-Update network adapter DNS settings:
+4. Update network adapter DNS settings:
 
-Preferred DNS: Set to local server IP
+    - Preferred DNS: Set to local server IP
 
 ---
 
 ## 🌳 Task 4: Promote Server to Domain Controller
-In Server Manager, click the flag icon > “Promote this server to a domain controller”.
+1. In Server Manager, click the flag icon > “Promote this server to a domain controller”.
 
-Select:
+2. Select:
 
-Add a new forest
+    - Add a new forest
 
-Root domain: yourcppusername.local
+    - Root domain: yourcppusername.local
 
-Use password: Password123
+3. Use password: Password123
 
-Ignore DNS delegation warning.
+3. Ignore DNS delegation warning.
 
-Wait for server reboot.
+5. Wait for server reboot.
 
 ---
 
 ## 👥 Task 5: Create AD Objects (OUs, Users, Groups)
-Open AD Users and Computers:
+1. Open AD Users and Computers:
 
-Set Administrator password to never expire
+    - Set Administrator password to never expire
 
-Create OUs:
+2. Create OUs:
 
-Employees, Groups, Workstations
+    - Employees, Groups, Workstations
 
-Create Users:
+3. Create Users:
 
-User One → user1
+    - User One → user1
 
-User Two → user2
+    - User Two → user2
 
-Create Groups:
+4. Create Groups:
 
-All Company: user1, user2
+    - All Company: user1, user2
 
-IT: user1
+    - IT: user1
 
-Marketing: user2
+    - Marketing: user2
 
 ---
 
