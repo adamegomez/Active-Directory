@@ -1,120 +1,116 @@
-## 🖥️ Active Directory Installation & Configuration Lab
+## 🏢 Active Directory Lab – Installation & Configuration
 
 ---
 
-## 📘 Overview
-
-This lab provides step-by-step instructions for setting up a Windows Server in AWS and configuring Active Directory. The process includes updating firewall rules, installing DNS and Active Directory Domain Services (AD DS), configuring Group Policy Objects (GPOs), and managing users, groups, and workstations.
+Objective: Learn how to install and configure Active Directory on a Windows Server EC2 instance. Tasks include installing DNS, creating Organizational Units (OUs), users, groups, group policies, and adding a client machine to the domain.
 
 ---
 
-The objective is to:
+## 📌 Overview
+This lab walks through setting up a basic Active Directory environment on AWS. You'll:
 
-- Install and configure DNS and Active Directory
+Install and configure DNS and AD DS roles
 
-- Create a domain and join a client computer
+Create OUs, users, and groups
 
-- Manage Organizational Units (OUs), users, and groups
+Apply Group Policy Objects (GPOs)
 
-- Configure GPOs and demonstrate policy application
+Add a client machine to the domain
+
+Verify policy application and assign admin rights
 
 ---
 
-## 🔧 Task 1: Update AWS Security Group Rules
+## 🛠️ Task 1: Update AWS Security Group (Firewall)
+Go to EC2 > Instances and select your Windows Server instance.
 
-Navigate to EC2 > Instances > Select your Windows Server
+Under the Networking tab, locate your VPC ID and copy the IPv4 CIDR.
 
-Under Networking tab, locate and click on VPC ID
+Go to the Security tab > Security groups > Edit inbound rules.
 
-Copy the IPv4 CIDR block from the VPC
-
-Return to the EC2 Security tab > Click Security Group link
-
-Edit Inbound Rules:
+Add rule:
 
 Type: All traffic
 
-Source: Paste the copied IPv4 CIDR
+Source: Your copied IPv4 CIDR
 
-Save rules ✅
+Click Save rules.
 
-## 🧠 Task 2: Install DNS and Active Directory
+---
 
-Login as Administrator
+## 📡 Task 2: Install DNS & Active Directory Roles
+Log into Windows Server as Administrator.
 
-Open Server Manager > Manage > Add Roles and Features
+Open Server Manager > Manage > Add Roles and Features.
 
-Steps:
+Select:
 
-Role-based installation ✅
+DNS Server
 
-Select local server ✅
+Active Directory Domain Services (AD DS)
 
-Add roles: DNS Server ✅ + AD DS ✅
+Click Next through prompts.
 
-Click Add Features when prompted
+Click Install.
 
-Continue through wizard > Install
+---
 
+## 🌐 Task 3: Configure DNS for AD
+Open Tools > DNS from Server Manager.
 
-## 🧱 Task 3: Configure DNS for AD
+Create new zone:
 
-Tools > DNS > Expand server > Forward Lookup Zones
+Zone Type: Primary
 
-Action > New Zone > Primary > <username>.local
+Zone Name: yourcppusername.local
 
-Allow both nonsecure and secure updates ✅
+Allow nonsecure and secure updates
 
-Go to Properties:
+Go to DNS > Properties:
 
-Interfaces tab: Select only IPv4
+Interfaces tab: Uncheck IPv6
 
-Forwarders tab: Add server's own IP (from ipconfig /all)
+Forwarders tab: Use IP from ipconfig /all
 
+Update network adapter DNS settings:
+
+Preferred DNS: Set to local server IP
+
+---
 
 ## 🌳 Task 4: Promote Server to Domain Controller
+In Server Manager, click the flag icon > “Promote this server to a domain controller”.
 
-Server Manager > Flag icon > Promote this server to domain controller
+Select:
 
-Create new forest: <username>.local
+Add a new forest
 
-Password: Password123
+Root domain: yourcppusername.local
 
-Ignore DNS delegation warning
+Use password: Password123
 
-Next > Install
+Ignore DNS delegation warning.
 
+Wait for server reboot.
 
-📝 Question 1:
-Explain FSMO roles, their purpose, and types in 2–3 paragraphs.
+---
 
-## 👥 Task 5: Create OUs, Users, Groups
+## 👥 Task 5: Create AD Objects (OUs, Users, Groups)
+Open AD Users and Computers:
 
-Tools > Active Directory Users and Computers
-
-Password never expires for Administrator ✅
+Set Administrator password to never expire
 
 Create OUs:
 
-Employees
+Employees, Groups, Workstations
 
-Groups
+Create Users:
 
-Workstations
+User One → user1
 
-Create Users under Employees:
+User Two → user2
 
-user1 / user2 (use "Password123")
-
-Create Groups under Groups OU:
-
-Marketing
-
-IT
-
-All Company
-
-Assign group membership:
+Create Groups:
 
 All Company: user1, user2
 
@@ -122,47 +118,71 @@ IT: user1
 
 Marketing: user2
 
-## 📑 Task 6: Create Group Policy
+---
 
-Tools > Group Policy Management
+## 🧩 Task 6: Create Group Policy (GPO)
+Open Group Policy Management.
 
-Create GPO under Workstations OU: Computer Settings
+Right-click Workstations OU → Create GPO → Name: Computer Settings
 
-Edit:
+Edit GPO:
 
-Title: Welcome to my domain
+Navigate to:
+Computer Configuration > Policies > Windows Settings > Security Settings > Local Policies > Security Options
 
-Text: You are logging into the <username.local> domain!
+Set:
 
-## 🧩 Task 7: Add Windows Client to Domain
+Message title: “Welcome to my domain”
 
-Launch new EC2 Windows Client (Windows Server 2025 Base)
+Message text: “You are logging into the yourcppusername.local domain!”
 
-Rename to <username>-client
+---
 
-DNS: Set to IP of Windows Server ✅
+## 🖥️ Task 7: Add Client Computer to Domain
+Launch a new EC2 instance:
 
-Join domain: <username>.local
+Name: Windows Client
 
-Use Administrator credentials from Windows Server
+OS: Windows Server 2025
 
-Restart Client
+Instance type: t3.small
 
-Move computer object from "Computers" to "Workstations"
+Rename PC: yourcppusername-client
 
-## 🛡️ Task 8: Grant Local Admin Rights
+Update network settings:
 
-Login to Client as domain\Administrator
+Preferred DNS: Local server IP
 
-Open Computer Management > Local Users and Groups > Administrators
+Join Domain: yourcppusername.local
 
-Add user1 and user2
+Confirm successful domain join.
 
-Logout, re-login as domain\user1
+On the server:
 
-## ✅ Final Verification
+Move client to Workstations OU
 
-Launch PowerShell as Admin
+---
 
-Run: gpresult /R
+## 🔐 Task 8: Assign Admin Rights to Domain Users
+Log into client using domain admin credentials.
 
+Open Computer Management > Local Users and Groups > Administrators.
+
+Add:
+
+user1, user2
+
+Log in as user1 using domain credentials.
+
+Open PowerShell as Admin.
+
+Run:
+
+``` bash
+Copy
+Edit
+gpresult /R
+
+```
+
+---
