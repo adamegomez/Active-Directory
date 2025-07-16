@@ -30,28 +30,28 @@ This lab walks through setting up a basic Active Directory environment on AWS. Y
 
 4. Add rule:
 
-- Type: All traffic
+  - Type: All traffic
 
-- Source: Your copied IPv4 CIDR
+  - Source: Your copied IPv4 CIDR
 
 5. Click Save rules.
 
 ---
 
 ## 📡 Task 2: Install DNS & Active Directory Roles
-Log into Windows Server as Administrator.
+1. Log into Windows Server as Administrator.
 
-Open Server Manager > Manage > Add Roles and Features.
+2. Open Server Manager > Manage > Add Roles and Features.
 
-Select:
+3. Select:
 
-DNS Server
+  - DNS Server
 
-Active Directory Domain Services (AD DS)
+  - Active Directory Domain Services (AD DS)
 
-Click Next through prompts.
+4. Click Next through prompts.
 
-Click Install.
+5. Click Install.
 
 ---
 
