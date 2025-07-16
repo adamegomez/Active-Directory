@@ -9,32 +9,32 @@ Objective: Learn how to install and configure Active Directory on a Windows Serv
 ## 📌 Overview
 This lab walks through setting up a basic Active Directory environment on AWS. You'll:
 
-Install and configure DNS and AD DS roles
+- Install and configure DNS and AD DS roles
 
-Create OUs, users, and groups
+- Create OUs, users, and groups
 
-Apply Group Policy Objects (GPOs)
+- Apply Group Policy Objects (GPOs)
 
-Add a client machine to the domain
+- Add a client machine to the domain
 
-Verify policy application and assign admin rights
+- Verify policy application and assign admin rights
 
 ---
 
 ## 🛠️ Task 1: Update AWS Security Group (Firewall)
-Go to EC2 > Instances and select your Windows Server instance.
+1. Go to EC2 > Instances and select your Windows Server instance.
 
-Under the Networking tab, locate your VPC ID and copy the IPv4 CIDR.
+2. Under the Networking tab, locate your VPC ID and copy the IPv4 CIDR.
 
-Go to the Security tab > Security groups > Edit inbound rules.
+3. Go to the Security tab > Security groups > Edit inbound rules.
 
-Add rule:
+4. Add rule:
 
-Type: All traffic
+- Type: All traffic
 
-Source: Your copied IPv4 CIDR
+- Source: Your copied IPv4 CIDR
 
-Click Save rules.
+5. Click Save rules.
 
 ---
 
